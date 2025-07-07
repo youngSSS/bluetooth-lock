@@ -35,8 +35,8 @@ class BluetoothLock:
             "target_device_name": "",  # 핸드폰 이름 (예: "iPhone")
             "target_device_address": "",  # MAC 주소 (옵션)
             "distance_threshold": -70,  # RSSI 임계값 (더 낮은 값 = 더 멀리)
-            "scan_interval": 1,  # 스캔 간격 (초)
-            "grace_period": 5,  # 잠금까지의 대기 시간 (초)
+            "scan_interval": 0,  # 스캔 간격 (초)
+            "grace_period": 3,  # 잠금까지의 대기 시간 (초)
             "lock_enabled": True  # 잠금 활성화 여부
         }
         
@@ -74,7 +74,7 @@ class BluetoothLock:
         try:
             scanner = BleakScanner(callback)
             await scanner.start()
-            await asyncio.sleep(2.0)  # 2초 스캔
+            await asyncio.sleep(10.0)  # 10초 스캔
             await scanner.stop()
             return devices
         except Exception as e:
