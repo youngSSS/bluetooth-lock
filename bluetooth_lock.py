@@ -36,7 +36,6 @@ class BluetoothLock:
             "target_device_address": "",  # MAC 주소 (옵션)
             "distance_threshold": -70,  # RSSI 임계값 (더 낮은 값 = 더 멀리)
             "scan_interval": 0,  # 스캔 간격 (초)
-            "grace_period": 3,  # 잠금까지의 대기 시간 (초)
             "scan_duration": 10,  # 스캔 시간 (초)
             "lock_enabled": True  # 잠금 활성화 여부
         }
@@ -149,19 +148,9 @@ class BluetoothLock:
     async def handle_device_far(self):
         """디바이스가 멀어졌을 때 처리합니다."""
         if not self.lock_triggered:
-            grace_period = self.config.get('grace_period', 5)
-            logger.warning(f"{grace_period}초 후 맥이 잠깁니다...")
-            await asyncio.sleep(grace_period)
-            
-            # 다시 확인
-            devices = await self.scan_devices()
-            target_result = self.find_target_device(devices)
-            
-            if not target_result or target_result[1] < self.config.get('distance_threshold', -70):
-                self.lock_mac()
-                self.lock_triggered = True
-            else:
-                logger.info("디바이스가 다시 감지되었습니다. 잠금 취소.")
+            logger.warning("맥이 잠깁니다...")
+            self.lock_mac()
+            self.lock_triggered = True
 
     async def setup_device(self):
         """초기 디바이스 설정을 도와줍니다."""
