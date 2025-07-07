@@ -1,3 +1,4 @@
 .venv/
 .DS_Store
 bluetooth_config.json
+nohup.out
